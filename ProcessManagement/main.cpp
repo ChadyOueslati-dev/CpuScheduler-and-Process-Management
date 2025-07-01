@@ -1,4 +1,4 @@
-//Chady Oueslati CpuScheduler / Process Management Logic 
+//Chady Oueslati CpuScheduler / Process Management Logic
 //University Solo Project
 
 #include <iostream>
@@ -8,8 +8,6 @@
 #include <iomanip>
 #include <limits>
 #include <queue>
-
-
 
 struct Process {
     int pid;               // process ID
@@ -24,7 +22,11 @@ struct Process {
 };
 
 // Function to print scheduling results given a list of processes and a title
-void print_results(const std::vector<Process>& procs, const std::string& title) {
+void print_results(std::vector<Process> procs, const std::string& title) {
+    std::sort(procs.begin(), procs.end(),
+              [](const Process &a, const Process &b) {
+                  return a.start_time < b.start_time;
+              });
     std::cout << "\n" << title << " Results:\n";                                     // header results
     std::cout << std::left
               << std::setw(6)  << "PID"
@@ -78,20 +80,23 @@ void schedule_FCFS(std::vector<Process> procs) {
 }
 
 // Shortest Job First scheduling (non-preemptive)
-void schedule_SJF(std::vector<Process> procs) {
+void schedule_SJF(std::vector<Process>& procs) {
     int n = procs.size();                                                             // total processes
     int completed = 0;                                                           // count completed
     int current_time = 0;                                                              // system clock
     std::vector<bool> done(n, false);                                      // track finished jobs
+    std::vector<int> burst_copy(n);                                           // local copy of burst times
+    for (int i = 0; i < n; ++i) burst_copy[i] = procs[i].burst_time;
+
     while (completed < n) {
         int idx = -1;
         int min_burst = std::numeric_limits<int>::max();                              // find shortest among arrived
         for (int i = 0; i < n; ++i) {
             if (!done[i] && procs[i].arrival_time <= current_time &&
-                procs[i].burst_time < min_burst) {
-                min_burst = procs[i].burst_time;
+                burst_copy[i] < min_burst) {
+                min_burst = burst_copy[i];
                 idx = i;
-            }
+                }
         }
         if (idx == -1) {                                                                      // no job ready
             current_time++;                                                                   // idle tick
@@ -99,7 +104,7 @@ void schedule_SJF(std::vector<Process> procs) {
         }
         auto &p = procs[idx];
         p.start_time = current_time;                           // start selected job
-        p.completion_time = p.start_time + p.burst_time;
+        p.completion_time = p.start_time + burst_copy[idx];
         p.turnaround_time = p.completion_time - p.arrival_time;
         p.waiting_time = p.start_time - p.arrival_time;
         current_time = p.completion_time;                                                    // advance clock
