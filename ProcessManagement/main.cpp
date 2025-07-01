@@ -1,3 +1,6 @@
+//Chady Oueslati CpuScheduler / Process Management Logic 
+//University Solo Project
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -5,6 +8,8 @@
 #include <iomanip>
 #include <limits>
 #include <queue>
+
+
 
 struct Process {
     int pid;               // process ID
