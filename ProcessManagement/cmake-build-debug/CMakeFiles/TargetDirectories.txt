@@ -1,0 +1,3 @@
+C:/Users/wesla/CLionProjects/ProcessManagement/cmake-build-debug/CMakeFiles/ProcessManagement.dir
+C:/Users/wesla/CLionProjects/ProcessManagement/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/wesla/CLionProjects/ProcessManagement/cmake-build-debug/CMakeFiles/rebuild_cache.dir
