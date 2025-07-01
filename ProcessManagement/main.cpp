@@ -10,15 +10,15 @@
 #include <queue>
 
 struct Process {
-    int pid;               // process ID
-    int arrival_time;      // time when process arrives
-    int burst_time;        // total CPU time needed
+    int pid;                   // process ID
+    int arrival_time;       // time when process arrives
+    int burst_time;       // total CPU time needed
     int memory_req;        // memory requirement
-    int start_time;        // time when process starts execution
-    int completion_time;   // time when process completes execution
-    int waiting_time;      // total time process spent waiting
-    int turnaround_time;   // total time from arrival to completion
-    int remaining_time;    // remaining CPU time (for preemptive algorithms)
+    int start_time;         // time when process starts execution
+    int completion_time;      // time when process completes execution
+    int waiting_time;    // total time process spent waiting
+    int turnaround_time;    // total time from arrival to completion
+    int remaining_time;   // remaining CPU time (for preemptive algorithms)
 };
 
 // Function to print scheduling results given a list of processes and a title
@@ -32,7 +32,7 @@ void print_results(std::vector<Process> procs, const std::string& title) {
               << std::setw(6)  << "PID"
               << std::setw(14) << "Arrival"
               << std::setw(10) << "Burst"
-              << std::setw(10) << "MemReq"  // table column headers
+              << std::setw(10) << "MemReq"  // table column headers SHOWN IN RESULTS
               << std::setw(12) << "Start"
               << std::setw(12) << "Complete"
               << std::setw(12) << "Waiting"
@@ -116,14 +116,14 @@ void schedule_SJF(std::vector<Process>& procs) {
 
 // Shortest Remaining Time First scheduling (preemptive)
 void schedule_SRTF(std::vector<Process> procs) {
-    int n = procs.size();                                                              // process count
-    std::vector<int> remaining(n);                                                            // remaining bursts
+    int n = procs.size();                     // process count
+    std::vector<int> remaining(n);   // remaining bursts
     for (int i = 0; i < n; ++i) {
-        remaining[i] = procs[i].burst_time;                                                   // init remaining
-        procs[i].start_time = -1;                                                             // mark unstarted
+        remaining[i] = procs[i].burst_time;                               // init remaining
+        procs[i].start_time = -1;                                 // mark unstarted
     }
-    int completed = 0;                                                                        // completed count
-    int current_time = 0;                                                                     // clock
+    int completed = 0;         // completed count
+    int current_time = 0;     // clock
 
     while (completed < n) {
         int idx = -1;
@@ -141,8 +141,8 @@ void schedule_SRTF(std::vector<Process> procs) {
         }
         if (procs[idx].start_time == -1)
             procs[idx].start_time = current_time;                                           // set first start time
-        remaining[idx]--;                                                                     // execute one unit
-        current_time++;                                                                       // advance clock
+        remaining[idx]--;                                           // execute one unit
+        current_time++;      // advance clock
         if (remaining[idx] == 0) {                                                            // job finished
             completed++;                                                                      // update count
             procs[idx].completion_time = current_time;
